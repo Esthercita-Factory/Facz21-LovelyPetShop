@@ -1,4 +1,3 @@
 <Solution>
-  <Project Path="LovelyPetShop.Consola/LovelyPetShop.Consola.csproj" />
-  <Project Path="LovelyPetShop.Domain/LovelyPetShop.Domain.csproj" />
+  <Project Path="LovelyPetShop.CLI\LovelyPetShop.CLI.csproj" />
 </Solution>

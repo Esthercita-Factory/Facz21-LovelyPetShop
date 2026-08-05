@@ -1,0 +1,42 @@
+[
+  {
+    "uuid": "77aabf77-672a-4c5d-923a-e21e9e2a6d05",
+    "document_type": "CC",
+    "document_number": "1018234567",
+    "name": "Andrew Cortez",
+    "phone": "3002265487",
+    "email": "afcz@gmail.com",
+    "address": "5th South St #43-43",
+    "created_at": "2026-08-04T15:21:20-05:00"
+  },
+  {
+    "uuid": "5973d1dc-2c54-4896-addc-b1eff6451abc",
+    "document_type": "CC",
+    "document_number": "32020202",
+    "name": "John Doe",
+    "phone": "3002258899",
+    "email": "test@test.com",
+    "address": "1st Ave #3-39",
+    "created_at": "2026-08-04T15:32:35-05:00"
+  },
+  {
+    "uuid": "a1b2c3d4-e5f6-4789-a012-b34567890abc",
+    "document_type": "CC",
+    "document_number": "1020304050",
+    "name": "Mary Gomez",
+    "phone": "3114567890",
+    "email": "mary.gomez@gmail.com",
+    "address": "100th St #15-20",
+    "created_at": "2026-08-04T16:00:00-05:00"
+  },
+  {
+    "uuid": "f9876543-21ba-4987-8654-3210fedcba98",
+    "document_type": "CE",
+    "document_number": "987654321",
+    "name": "Charles Smith",
+    "phone": "3209876543",
+    "email": "charles.smith@outlook.com",
+    "address": "742 Evergreen Terrace",
+    "created_at": "2026-08-04T16:15:00-05:00"
+  }
+]

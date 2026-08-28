@@ -1,26 +1,43 @@
 using System.Text.Json.Serialization;
+using LovelyPetShop.CLI.Domain.Interfaces;
 
-namespace LovelyPetShop.Domain.Entities;
+namespace LovelyPetShop.CLI.Domain.Entities;
 
-public class Pet
+public class Pet : Animal, IRegistrable
 {
     [JsonPropertyName("uuid")]
     public string Uuid { get; set; } = Guid.NewGuid().ToString();
 
     [JsonPropertyName("name")]
-    public string Name { get; set; } = string.Empty;
+    public new string Name
+    {
+        get => base.Name;
+        set => base.Name = value;
+    }
 
     [JsonPropertyName("species")]
-    public string Species { get; set; } = string.Empty;
+    public new string Species
+    {
+        get => base.Species;
+        set => base.Species = value;
+    }
 
     [JsonPropertyName("breed")]
     public string Breed { get; set; } = string.Empty;
 
     [JsonPropertyName("age")]
-    public int Age { get; set; }
+    public new int Age
+    {
+        get => base.Age;
+        set => base.Age = value;
+    }
 
     [JsonPropertyName("weight")]
-    public double Weight { get; set; }
+    public new double Weight
+    {
+        get => base.Weight;
+        set => base.Weight = value;
+    }
 
     [JsonPropertyName("symptoms")]
     public string Symptoms { get; set; } = string.Empty;
@@ -51,4 +68,16 @@ public class Pet
         OwnerUuid = ownerUuid;
         CreatedAt = DateTime.Now;
     }
+
+    public override string EmitirSonido() => Species.ToLower() switch
+    {
+        "perro" or "canino" => "¡Guau guau!",
+        "gato" or "felino" => "¡Miau miau!",
+        "ave" or "pájaro" or "loro" or "canario" => "¡Pío pío / Kraaa!",
+        "conejo" or "roedor" or "hamster" => "¡Chii chii!",
+        _ => "¡Sonido característico de animal!"
+    };
+
+    public string ObtenerResumenRegistro() =>
+        $"[REGISTRO MASCOTA] {Name} ({Species} - {Breed}) | Edad: {Age}a | Peso: {Weight}kg | Síntomas: {Symptoms} | Doc Dueño: {OwnerDocumentNumber} | UUID: {Uuid}";
 }

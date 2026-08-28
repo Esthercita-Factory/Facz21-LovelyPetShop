@@ -1,6 +1,6 @@
-using LovelyPetShop.Domain.Entities;
+using LovelyPetShop.CLI.Domain.Entities;
 
-namespace LovelyPetShop.Domain.Interfaces;
+namespace LovelyPetShop.CLI.Domain.Interfaces;
 
 public interface IOwnerRepository
 {

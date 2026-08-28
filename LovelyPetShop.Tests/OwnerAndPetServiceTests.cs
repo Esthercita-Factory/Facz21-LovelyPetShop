@@ -1,6 +1,6 @@
-using LovelyPetShop.Business.Services;
-using LovelyPetShop.Domain.Entities;
-using LovelyPetShop.Domain.Interfaces;
+using LovelyPetShop.CLI.Business.Services;
+using LovelyPetShop.CLI.Domain.Entities;
+using LovelyPetShop.CLI.Domain.Interfaces;
 using Xunit;
 
 namespace LovelyPetShop.Tests;
@@ -88,7 +88,7 @@ public class OwnerAndPetServiceTests
     }
 
     [Fact]
-    public async Task CreateOwner_WithValidDocument_GeneratesUuidAndStoresDocument()
+    public async Task CrearPropietario_ConDocumentoValido_GeneraUuidYGuardaDocumento()
     {
         var result = await _ownerService.CreateOwnerAsync("CC", "1018234567", "Carlos Pérez", "3001234567", "carlos@example.com", "Calle 10 #20-30");
 
@@ -103,17 +103,17 @@ public class OwnerAndPetServiceTests
     }
 
     [Fact]
-    public async Task CreateOwner_InvalidDocumentType_ReturnsError()
+    public async Task CrearPropietario_TipoDocumentoInvalido_RetornaError()
     {
-        var result = await _ownerService.CreateOwnerAsync("INVALID_TYPE", "12345", "Test Owner", "3000000000", "test@test.com", "Address");
+        var result = await _ownerService.CreateOwnerAsync("TIPO_INVALIDO", "12345", "Propietario Pruebas", "3000000000", "test@test.com", "Dirección");
         Assert.False(result.Success);
-        Assert.Contains("Invalid", result.Message);
+        Assert.Contains("no es válido", result.Message);
     }
 
     [Fact]
-    public async Task CreatePet_WithSpeciesAndBreed_StoresSuccessfully()
+    public async Task CrearMascota_ConEspecieYRaza_GuardaExitosamente()
     {
-        var ownerRes = await _ownerService.CreateOwnerAsync("PASSPORT", "PA987654", "María López", "3109876543", "maria@example.com", "Av Central");
+        var ownerRes = await _ownerService.CreateOwnerAsync("PASAPORTE", "PA987654", "María López", "3109876543", "maria@example.com", "Av Central");
         string ownerDocNumber = "PA987654";
 
         var petRes = await _petService.CreatePetAsync("Firulais", "Perro", "Criollo", 3, 12.5, "Chequeo general", ownerDocNumber);
@@ -129,7 +129,7 @@ public class OwnerAndPetServiceTests
     }
 
     [Fact]
-    public async Task CreatePetWithOwnerCombined_RegistersBothOwnerAndPetInOneStep()
+    public async Task CrearMascotaConPropietarioConjunto_RegistraAmbosEnUnPaso()
     {
         var combinedRes = await _petService.CreatePetWithOwnerAsync(
             "Michi", "Gato", "Persa", 2, 4.2, "Vacunación",

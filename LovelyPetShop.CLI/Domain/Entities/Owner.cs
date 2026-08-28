@@ -1,14 +1,15 @@
 using System.Text.Json.Serialization;
+using LovelyPetShop.CLI.Domain.Interfaces;
 
-namespace LovelyPetShop.Domain.Entities;
+namespace LovelyPetShop.CLI.Domain.Entities;
 
-public class Owner
+public class Owner : IRegistrable, INotificable
 {
     [JsonPropertyName("uuid")]
     public string Uuid { get; set; } = Guid.NewGuid().ToString();
 
     [JsonPropertyName("document_type")]
-    public string DocumentType { get; set; } = "CC"; // CC, CE, TI, PASAPORTE, NIT, PEP
+    public string DocumentType { get; set; } = "CC"; // CC, CE, TI, RC, NIT, PASAPORTE, PEP, PPT
 
     [JsonPropertyName("document_number")]
     public string DocumentNumber { get; set; } = string.Empty;
@@ -45,5 +46,15 @@ public class Owner
         Email = email;
         Address = address;
         CreatedAt = DateTime.Now;
+    }
+
+    public string ObtenerResumenRegistro() =>
+        $"[REGISTRO PROPIETARIO] {Name} | Documento: {DocumentType} {DocumentNumber} | Tel: {Phone} | Email: {Email} | Mascotas asociadas: {Pets.Count} | UUID: {Uuid}";
+
+    public async Task<string> EnviarNotificacionAsync(string mensaje)
+    {
+        // Simulación asíncrona de envío de notificación (SMS / Email)
+        await Task.Delay(150);
+        return $"[NOTIFICACIÓN ENVIADA a {Name} ({Phone} / {Email})]: {mensaje}";
     }
 }

@@ -1,4 +1,4 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>net10.0</TargetFramework>
@@ -19,9 +19,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\LovelyPetShop.Domain\LovelyPetShop.Domain.csproj" />
-    <ProjectReference Include="..\LovelyPetShop.Business\LovelyPetShop.Business.csproj" />
-    <ProjectReference Include="..\LovelyPetShop.DataAccess\LovelyPetShop.DataAccess.csproj" />
+    <ProjectReference Include="..\LovelyPetShop.CLI\LovelyPetShop.CLI.csproj" />
   </ItemGroup>
 
 </Project>

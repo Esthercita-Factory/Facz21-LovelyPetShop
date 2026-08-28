@@ -1,8 +1,8 @@
 using System.Text.Json;
-using LovelyPetShop.Domain.Entities;
-using LovelyPetShop.Domain.Interfaces;
+using LovelyPetShop.CLI.Domain.Entities;
+using LovelyPetShop.CLI.Domain.Interfaces;
 
-namespace LovelyPetShop.DataAccess.Repositories;
+namespace LovelyPetShop.CLI.DataAccess.Repositories;
 
 public class JsonPetRepository : IPetRepository
 {

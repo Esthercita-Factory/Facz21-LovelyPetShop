@@ -1,7 +1,7 @@
-using LovelyPetShop.Domain.Entities;
-using LovelyPetShop.Domain.Interfaces;
+using LovelyPetShop.CLI.Domain.Entities;
+using LovelyPetShop.CLI.Domain.Interfaces;
 
-namespace LovelyPetShop.Business.Services;
+namespace LovelyPetShop.CLI.Business.Services;
 
 public class PetService : IPetService
 {
@@ -36,26 +36,26 @@ public class PetService : IPetService
     public async Task<(bool Success, string Message, string? CreatedUuid)> CreatePetAsync(string name, string species, string breed, int age, double weight, string symptoms, string ownerDocumentNumber)
     {
         if (string.IsNullOrWhiteSpace(name))
-            return (false, "Pet name is required.", null);
+            return (false, "El nombre de la mascota es obligatorio.", null);
 
         if (string.IsNullOrWhiteSpace(species))
-            return (false, "Species is required.", null);
+            return (false, "La especie es obligatoria.", null);
 
         if (string.IsNullOrWhiteSpace(breed))
-            breed = "Mixed Breed";
+            breed = "Criollo / Mestizo";
 
         if (age < 0)
-            return (false, "Age cannot be negative.", null);
+            return (false, "La edad no puede ser negativa.", null);
 
         if (weight < 0)
-            return (false, "Weight cannot be negative.", null);
+            return (false, "El peso no puede ser negativo.", null);
 
         if (string.IsNullOrWhiteSpace(ownerDocumentNumber))
-            return (false, "Owner document number is required.", null);
+            return (false, "El número de documento del propietario es obligatorio.", null);
 
         var owner = await _ownerService.GetOwnerByDocumentAsync(ownerDocumentNumber.Trim());
         if (owner == null)
-            return (false, $"Error: No registered owner found with document No. '{ownerDocumentNumber}'.", null);
+            return (false, $"Error: No se encontró ningún propietario registrado con el documento No. '{ownerDocumentNumber}'.", null);
 
         var pet = new Pet
         {
@@ -72,7 +72,7 @@ public class PetService : IPetService
         };
 
         await _petRepository.AddAsync(pet);
-        return (true, $"Pet '{pet.Name}' (Species: {pet.Species}, Breed: {pet.Breed}) successfully registered for owner '{owner.Name}' (Doc: {owner.DocumentNumber}, Pet UUID: {pet.Uuid}).", pet.Uuid);
+        return (true, $"Mascota '{pet.Name}' (Especie: {pet.Species}, Raza: {pet.Breed}) registrada exitosamente para el propietario '{owner.Name}' (Doc: {owner.DocumentNumber}, UUID Mascota: {pet.Uuid}).", pet.Uuid);
     }
 
     public async Task<(bool Success, string Message, string? CreatedPetUuid, string? CreatedOwnerUuid)> CreatePetWithOwnerAsync(
@@ -93,7 +93,7 @@ public class PetService : IPetService
             var ownerResult = await _ownerService.CreateOwnerAsync(docType, docNumber, ownerName, ownerPhone, ownerEmail, ownerAddress);
             if (!ownerResult.Success || string.IsNullOrEmpty(ownerResult.CreatedUuid))
             {
-                return (false, $"Error registering owner: {ownerResult.Message}", null, null);
+                return (false, $"Error al registrar propietario: {ownerResult.Message}", null, null);
             }
             ownerDocNum = docNumber.Trim();
             ownerUuid = ownerResult.CreatedUuid;
@@ -105,20 +105,20 @@ public class PetService : IPetService
             return (false, petResult.Message, null, ownerUuid);
         }
 
-        return (true, $"Pet '{petName}' and owner registered successfully. (Pet UUID: {petResult.CreatedUuid}, Owner Doc: {ownerDocNum})", petResult.CreatedUuid, ownerUuid);
+        return (true, $"Mascota '{petName}' y propietario registrados exitosamente. (UUID Mascota: {petResult.CreatedUuid}, Doc Propietario: {ownerDocNum})", petResult.CreatedUuid, ownerUuid);
     }
 
     public async Task<(bool Success, string Message)> UpdatePetAsync(string petUuid, string? name, string? species, string? breed, int? age, double? weight, string? symptoms, string? ownerDocumentNumber)
     {
         var pet = await GetPetByUuidAsync(petUuid);
         if (pet == null)
-            return (false, $"No pet found with UUID '{petUuid}'.");
+            return (false, $"No se encontró ninguna mascota con el UUID '{petUuid}'.");
 
         if (!string.IsNullOrWhiteSpace(ownerDocumentNumber) && !string.Equals(ownerDocumentNumber.Trim(), pet.OwnerDocumentNumber, StringComparison.OrdinalIgnoreCase))
         {
             var newOwner = await _ownerService.GetOwnerByDocumentAsync(ownerDocumentNumber.Trim());
             if (newOwner == null)
-                return (false, $"No registered owner found with document No. '{ownerDocumentNumber}'.");
+                return (false, $"No se encontró ningún propietario registrado con el documento No. '{ownerDocumentNumber}'.");
 
             pet.OwnerDocumentNumber = newOwner.DocumentNumber;
             pet.OwnerUuid = newOwner.Uuid;
@@ -136,14 +136,14 @@ public class PetService : IPetService
         if (age.HasValue)
         {
             if (age.Value < 0)
-                return (false, "Age cannot be negative.");
+                return (false, "La edad no puede ser negativa.");
             pet.Age = age.Value;
         }
 
         if (weight.HasValue)
         {
             if (weight.Value < 0)
-                return (false, "Weight cannot be negative.");
+                return (false, "El peso no puede ser negativo.");
             pet.Weight = weight.Value;
         }
 
@@ -151,19 +151,19 @@ public class PetService : IPetService
             pet.Symptoms = symptoms.Trim();
 
         await _petRepository.UpdateAsync(pet);
-        return (true, $"Pet '{pet.Name}' (UUID: {pet.Uuid}) data updated successfully.");
+        return (true, $"Datos de la mascota '{pet.Name}' (UUID: {pet.Uuid}) actualizados exitosamente.");
     }
 
     public async Task<(bool Success, string Message)> DeletePetAsync(string petUuid)
     {
         var pet = await GetPetByUuidAsync(petUuid);
         if (pet == null)
-            return (false, $"No pet found with UUID '{petUuid}'.");
+            return (false, $"No se encontró ninguna mascota con el UUID '{petUuid}'.");
 
         var deleted = await _petRepository.DeleteByUuidAsync(pet.Uuid);
         if (!deleted)
-            return (false, "An error occurred while attempting to delete the pet.");
+            return (false, "Ocurrió un error al intentar eliminar la mascota.");
 
-        return (true, $"Pet '{pet.Name}' (UUID: {pet.Uuid}) removed from the system.");
+        return (true, $"Mascota '{pet.Name}' (UUID: {pet.Uuid}) eliminada del sistema.");
     }
 }
